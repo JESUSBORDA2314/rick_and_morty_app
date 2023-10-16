@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty_app/models/character_mode.dart';
 import 'package:http/http.dart' as http;
+import 'package:rick_and_morty_app/models/episode_mode.dart';
 
 class ApiProvider with ChangeNotifier {
   final url = 'rickandmortyapi.com';
   List<Character> characters = [];
+  List<Episode> episodes = [];
 
   Future<void> getChracters(int page) async {
     final result = await http.get(Uri.https(url, "/api/character", {
@@ -14,5 +16,23 @@ class ApiProvider with ChangeNotifier {
     characters.addAll(response.results!);
     notifyListeners();
     //print(response.results);
+  }
+
+  Future<List<Episode>> getEpisodes(Character character) async {
+    episodes = [];
+    for (var i = 0; i < character.episode!.length; i++) {
+      final result = await http.get(Uri.parse(character.episode![i]));
+      final response = episodeFromJson(result.body);
+      episodes.add(response);
+      notifyListeners();
+    }
+    return episodes;
+  }
+
+  Future<List<Character>> getCharacter(String name) async {
+    final result =
+        await http.get(Uri.https(url, '/api/charachter/', {'name': name}));
+    final response = characterResponseFromJson(result.body);
+    return response.results!;
   }
 }
