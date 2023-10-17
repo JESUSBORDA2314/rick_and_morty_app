@@ -12,6 +12,7 @@ class SearchCharacter extends SearchDelegate {
       IconButton(
           onPressed: () {
             query = '';
+            showSuggestions(context);
           },
           icon: Icon(Icons.clear))
     ];

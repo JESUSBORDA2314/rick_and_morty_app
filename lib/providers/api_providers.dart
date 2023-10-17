@@ -7,7 +7,7 @@ class ApiProvider with ChangeNotifier {
   final url = 'rickandmortyapi.com';
   List<Character> characters = [];
   List<Episode> episodes = [];
-
+  //Este METODO TRAE A TODOS LOS PERSONAJES
   Future<void> getChracters(int page) async {
     final result = await http.get(Uri.https(url, "/api/character", {
       'page': page.toString(),
@@ -15,8 +15,9 @@ class ApiProvider with ChangeNotifier {
     final response = characterResponseFromJson(result.body);
     characters.addAll(response.results!);
     notifyListeners();
-    //print(response.results);
   }
+
+  //Este metodo trae los episodios por personaje
 
   Future<List<Episode>> getEpisodes(Character character) async {
     episodes = [];
@@ -29,10 +30,12 @@ class ApiProvider with ChangeNotifier {
     return episodes;
   }
 
+  //Este trae los personajes dependiedo de un String
   Future<List<Character>> getCharacter(String name) async {
     final result =
-        await http.get(Uri.https(url, '/api/charachter/', {'name': name}));
+        await http.get(Uri.https(url, "/api/character/", {"name": name}));
     final response = characterResponseFromJson(result.body);
+
     return response.results!;
   }
 }
