@@ -26,7 +26,7 @@ class ApiProvider with ChangeNotifier {
       final response = episodeFromJson(result.body);
       episodes.add(response);
       notifyListeners();
-    }
+    } 
     return episodes;
   }
 
